@@ -1,1 +1,1 @@
-## EDAN01 - Constant Programming
+## EDAN01 - Constraint Programming
