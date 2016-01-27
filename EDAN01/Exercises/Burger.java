@@ -65,10 +65,10 @@ public class Burger  {
 	IntVar pickles = new IntVar(store, "PICKLES", 1, 5);
 	IntVar lettuce = new IntVar(store, "LETTUCE", 1, 5);
 	IntVar ketchup = new IntVar(store, "KETCHUP", 1, 5);
-	IntVar tomatos = new IntVar(store, "TOMATOS", 1, 5);
+	IntVar tomatoes = new IntVar(store, "TOMATOES", 1, 5);
 
 	// Creating arrays for FDVs
-	IntVar ingredients[] = { beef, bun, cheese, onions, pickles, lettuce, ketchup, tomatos };
+	IntVar ingredients[] = { beef, bun, cheese, onions, pickles, lettuce, ketchup, tomatoes };
 
 	for (IntVar v : ingredients)
 	    vars.add(v);
@@ -93,12 +93,15 @@ public class Burger  {
 	store.impose(new SumWeight(ingredients, calories, totalCALORIES));
 
 	store.impose(new XeqY(ketchup, lettuce));
-	store.impose(new XeqY(pickles, tomatos));
+	store.impose(new XeqY(pickles, tomatoes));
+
+	IntVar negTotalCost = new IntVar(store, "negTotalCost", -10000, 10000);
+	store.impose(new XmulCeqZ(totalCOST, -1, negTotalCost));
 			
 	Search<IntVar> label = new DepthFirstSearch<IntVar>(); 
 	SelectChoicePoint<IntVar> select =	
-		new SimpleSelect<IntVar>(ingredients, new LargestDomain<IntVar>(), new IndomainMax<IntVar>());
-	boolean result = label.labeling(store, select);
+	new SimpleSelect<IntVar>(ingredients, new SmallestDomain<IntVar>(), new IndomainMax<IntVar>());
+	boolean result = label.labeling(store, select, negTotalCost);
 
 	System.out.println (result);
 
