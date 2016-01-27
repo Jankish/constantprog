@@ -97,7 +97,7 @@ public class Burger  {
 			
 	Search<IntVar> label = new DepthFirstSearch<IntVar>(); 
 	SelectChoicePoint<IntVar> select =	
-		new SimpleSelect<IntVar>(totalCOST, new LargestDomain<IntVar>(), new IndomainMax<IntVar>());
+		new SimpleSelect<IntVar>(ingredients, new LargestDomain<IntVar>(), new IndomainMax<IntVar>());
 	boolean result = label.labeling(store, select);
 
 	System.out.println (result);
